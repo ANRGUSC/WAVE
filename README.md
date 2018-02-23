@@ -21,6 +21,6 @@ to it.
 
 ## Instructions:
 You need to have [Jupiter](https://github.com/ANRGUSC/Jupiter) first. Then copy either 
-random_WAVE folder or greedy_WAVE folder to Jupiter's root folder, and rename as "wave".
+`random_WAVE` folder or `greedy_WAVE` folder to Jupiter's root folder, and rename as "wave".
 Then it's good to use.
 
