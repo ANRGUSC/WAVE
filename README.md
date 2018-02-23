@@ -13,9 +13,14 @@ The algorithm will random choose a node in the set of all validate nodes.
 
 ## Greedy WAVE
 When assigning tasks to nodes, this version of WAVE will first get network 
-parameters from [profilers](https://github.com/ANRGUSC/DRUPE) as a delay factor.
+parameters from [DRUPE](https://github.com/ANRGUSC/DRUPE) as a delay factor.
 The delay factor contains network delay, target node's CPU usage and memory usage.
 The WAVE running in each of the node will maintain a sorted list of all its neighbor's delay 
 information. Then it will pick up the node who has the lowest delay and assign tasks 
 to it.
+
+## Instructions:
+You need to have [Jupiter](https://github.com/ANRGUSC/Jupiter) first. Then copy either 
+random_WAVE folder or greedy_WAVE folder to Jupiter's root folder, and rename as "wave".
+Then it's good to use.
 
