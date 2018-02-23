@@ -1,3 +1,13 @@
+"""
+ * Copyright (c) 2018, Autonomous Networks Research Group. All rights reserved.
+ *     contributors: 
+ *      Pranav Sakulkar
+ *      Pradipta Ghosh
+ *      Jiatong Wang
+ *      Aleksandra Knezevic
+ *      Bhaskar Krishnamachari
+ *     Read license file in main directory for more details  
+"""
 
 # -*- coding: utf-8 -*-
 
