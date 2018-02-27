@@ -1,4 +1,4 @@
-# WAVE_for_Jupiter
+# WAVE
 
 WAVE is a distributed scheduler for DAG type
 task graph that outputs a mapping of tasks to real compute nodes.
