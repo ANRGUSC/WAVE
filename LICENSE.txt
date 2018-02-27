@@ -6,12 +6,9 @@ University of Southern California
 http://anrg.usc.edu/
 
 Contributors:
- * Pradipta Ghosh 
- * Pranav Sakulkar 
- * Aleksandra Knezevic 
+ * Pranav Sakulkar  
  * Jiatong Wang 
- * Quynh Nguyen 
- * Jason Tran 
+ * Pradipta Ghosh 
  * Bhaskar Krishnamachari 
 
 
