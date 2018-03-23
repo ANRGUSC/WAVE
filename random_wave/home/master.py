@@ -4,8 +4,6 @@ __copyright__ = "Copyright (c) 2018, Autonomous Networks Research Group. All rig
 __license__ = "GPL"
 __version__ = "1.0"
 
-
-
 import re
 import threading
 import os
