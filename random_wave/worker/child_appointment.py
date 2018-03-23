@@ -1,9 +1,23 @@
+<<<<<<< HEAD
 # -*- coding: utf-8 -*-
 __author__ = "Pranav Sakulkar, Jiatong Wang, Pradipta Ghosh, Quynh Nguyen, Bhaskar Krishnamachari"
 __copyright__ = "Copyright (c) 2018, Autonomous Networks Research Group. All rights reserved."
 __license__ = "GPL"
 __version__ = "1.0"
 
+=======
+"""
+ * Copyright (c) 2018, Autonomous Networks Research Group. All rights reserved.
+ *     contributors: 
+ *      Pranav Sakulkar
+ *      Jiatong Wang
+ *      Pradipta Ghosh
+ *      Bhaskar Krishnamachari
+ *     Read license file in main directory for more details  
+"""
+
+# -*- coding: utf-8 -*-
+>>>>>>> 2421ba79d8b7968b8be5a8f9d9c3c9e970da8498
 
 import json
 import random
@@ -13,7 +27,11 @@ import time
 import os
 import sys
 import urllib
+<<<<<<< HEAD
 
+=======
+from urllib import parse
+>>>>>>> 2421ba79d8b7968b8be5a8f9d9c3c9e970da8498
 import shutil
 
 import _thread
@@ -24,6 +42,7 @@ from pymongo import MongoClient
 
 app = Flask(__name__)
 
+<<<<<<< HEAD
 
 def prepare_global():
     """Prepare global information (Node info, relations between tasks)
@@ -64,12 +83,50 @@ def assign_task():
     Returns:
         TYPE: Description
     """
+=======
+'''
+
+'''
+
+# Get ALL node info
+node_count = 0
+nodes = {}
+for node_name, node_ip in zip(os.environ['ALL_NODES'].split(":"), os.environ['ALL_NODES_IPS'].split(":")):
+    if node_name == "":
+        continue
+    nodes[node_name] = node_ip + ":48080"
+    node_count +=  1
+master_host = os.environ['HOME_IP'] + ":48080"
+print("Nodes", nodes)
+
+#
+node_id = -1
+node_name = ""
+debug = True
+
+# control relations between tasks
+control_relation = {}
+
+local_children = "local/local_children.txt"
+local_mapping = "local/local_mapping.txt"
+local_responsibility = "local/task_responsibility"
+
+# lock for sync file operation
+lock = threading.Lock()
+
+kill_flag = False
+
+
+@app.route('/assign_task')
+def assign_task():
+>>>>>>> 2421ba79d8b7968b8be5a8f9d9c3c9e970da8498
     try:
         task_name = request.args.get('task_name')
         write_file(local_responsibility + "/" + task_name, [], "w+")
         return "ok"
     except Exception:
         return "not ok"
+<<<<<<< HEAD
 app.add_url_rule('/assign_task', 'assign_task', assign_task)
 
 #@app.route('/kill_thread')
@@ -87,6 +144,18 @@ def init_folder():
     Raises:
         Exception: ``ok`` if successful, ``not ok`` otherwise
     """
+=======
+
+
+@app.route('/kill_thread')
+def kill_thread():
+    global kill_flag
+    kill_flag = True
+    return "ok"
+
+
+def init_folder():
+>>>>>>> 2421ba79d8b7968b8be5a8f9d9c3c9e970da8498
     print("Trying to initialize folders here")
     try:
         if not os.path.exists("./local"):
@@ -106,6 +175,7 @@ def init_folder():
         return "not ok"
 
 
+<<<<<<< HEAD
 #@app.route('/recv_control')
 def recv_control():
     """Get assigned control function, prepare file ``DAG/parent_controller.txt`` storing parent control information of tasks 
@@ -113,6 +183,10 @@ def recv_control():
     Raises:
         Exception: ``ok`` if successful, ``not ok`` otherwise
     """
+=======
+@app.route('/recv_control')
+def recv_control():
+>>>>>>> 2421ba79d8b7968b8be5a8f9d9c3c9e970da8498
     try:
         control = request.args.get('control')
         items = re.split(r'#', control)
@@ -132,6 +206,7 @@ def recv_control():
     except Exception:
         return "not ok"
     return "ok"
+<<<<<<< HEAD
 app.add_url_rule('/recv_control', 'recv_control', recv_control)
 
 
@@ -149,6 +224,15 @@ def assign_task_to_remote(assigned_node, task_name):
         url = "http://" + nodes[assigned_node] + "/assign_task"
         params = {'task_name': task_name}
         params = urllib.parse.urlencode(params)
+=======
+
+
+def assign_task_to_remote(assigned_node, task_name):
+    try:
+        url = "http://" + nodes[assigned_node] + "/assign_task"
+        params = {'task_name': task_name}
+        params = parse.urlencode(params)
+>>>>>>> 2421ba79d8b7968b8be5a8f9d9c3c9e970da8498
         req = urllib.request.Request(url='%s%s%s' % (url, '?', params))
         res = urllib.request.urlopen(req)
         res = res.read()
@@ -159,6 +243,7 @@ def assign_task_to_remote(assigned_node, task_name):
 
 
 def call_send_mapping(mapping, node):
+<<<<<<< HEAD
     """
     - A function that used for intermediate data transfer.
     - Return mapping information for specific node.
@@ -174,6 +259,12 @@ def call_send_mapping(mapping, node):
         url = "http://" + master_host + "/recv_mapping"
         params = {'mapping': mapping, "node": node}
         params = urllib.parse.urlencode(params)
+=======
+    try:
+        url = "http://" + master_host + "/recv_mapping"
+        params = {'mapping': mapping, "node": node}
+        params = parse.urlencode(params)
+>>>>>>> 2421ba79d8b7968b8be5a8f9d9c3c9e970da8498
         req = urllib.request.Request(url='%s%s%s' % (url, '?', params))
         res = urllib.request.urlopen(req)
         res = res.read()
@@ -183,11 +274,16 @@ def call_send_mapping(mapping, node):
     return res
 
 
+<<<<<<< HEAD
 
 def watcher():
     """- thread to watch directory: ``local/task_responsibility``
        - Write tasks to `local/local_children.txt` and `local/local_mapping.txt` that appear under the watching folder
     """
+=======
+# thread to watch directory: local/task_responsibility
+def watcher():
+>>>>>>> 2421ba79d8b7968b8be5a8f9d9c3c9e970da8498
     pre_time = time.time()
 
     tmp_mapping = ""
@@ -239,10 +335,15 @@ def watcher():
         time.sleep(10)
 
 
+<<<<<<< HEAD
 
 def distribute():
     """thread to assign todo task to remote nodes
     """
+=======
+# thread to assign todo task to nodes
+def distribute():
+>>>>>>> 2421ba79d8b7968b8be5a8f9d9c3c9e970da8498
     done_dict = set()
     while True:
         if kill_flag:
@@ -279,6 +380,7 @@ def distribute():
 
 
 def scan_dir(directory):
+<<<<<<< HEAD
     """Scan the directory, append all file names to list ``tasks``
     
     Args:
@@ -287,20 +389,27 @@ def scan_dir(directory):
     Returns:
         list: tasks - List of all file names in the directory
     """
+=======
+>>>>>>> 2421ba79d8b7968b8be5a8f9d9c3c9e970da8498
     tasks = []
     for file_name in os.listdir(directory):
         tasks.append(file_name)
     return tasks
 
 
+<<<<<<< HEAD
 
 def create_file():
     """Do nothing/ pass
     """
+=======
+def create_file():
+>>>>>>> 2421ba79d8b7968b8be5a8f9d9c3c9e970da8498
     pass
 
 
 def write_file(file_name, content, mode):
+<<<<<<< HEAD
     """Write the content to file
     
     Args:
@@ -308,6 +417,8 @@ def write_file(file_name, content, mode):
         content (str): content to be written
         mode (str): write mode 
     """
+=======
+>>>>>>> 2421ba79d8b7968b8be5a8f9d9c3c9e970da8498
     lock.acquire()
     file = open(file_name, mode)
     for line in content:
@@ -316,6 +427,7 @@ def write_file(file_name, content, mode):
     lock.release()
 
 
+<<<<<<< HEAD
 def read_file(file_name):
     """get all lines in a file
     
@@ -325,6 +437,10 @@ def read_file(file_name):
     Returns:
         str: file_contents - all lines in a file
     """
+=======
+# get all lines in a file
+def read_file(file_name):
+>>>>>>> 2421ba79d8b7968b8be5a8f9d9c3c9e970da8498
     lock.acquire()
     file_contents = []
     file = open(file_name)
@@ -338,6 +454,7 @@ def read_file(file_name):
 
 
 def output(msg):
+<<<<<<< HEAD
     """if debug is True, print the msg
     
     Args:
@@ -350,6 +467,16 @@ def output(msg):
 def get_resource_data():
     """Collect resource profiling information
     """
+=======
+    if debug:
+        print(msg)
+
+@app.route('/')
+def hello_world():
+    return 'Hello World!'
+
+def get_resource_data():
+>>>>>>> 2421ba79d8b7968b8be5a8f9d9c3c9e970da8498
     print("Startig resource profile collection thread")
     # Requsting resource profiler data using flask for its corresponding profiler node
     RP_PORT = 6100
@@ -370,8 +497,11 @@ def get_resource_data():
     print("Resource profiles:", data)
 
 def get_network_profile_data():
+<<<<<<< HEAD
     """Collect the network profile from local MongoDB peer
     """
+=======
+>>>>>>> 2421ba79d8b7968b8be5a8f9d9c3c9e970da8498
     # Collect the network profile from local MongoDB peer
     print('Collecting Netowrk Monitoring Data from MongoDB')
     NP_PORT = 6200
@@ -379,6 +509,7 @@ def get_network_profile_data():
     db = client_mongo.droplet_network_profiler
     print(db[os.environ['PROFILER']])
 
+<<<<<<< HEAD
 def main():
     """
         - Prepare global information
@@ -391,6 +522,9 @@ def main():
 
     prepare_global()
     
+=======
+if __name__ == '__main__':
+>>>>>>> 2421ba79d8b7968b8be5a8f9d9c3c9e970da8498
     node_name = os.environ['SELF_NAME']
     node_id = int(node_name.split("e")[-1])
 
@@ -409,9 +543,13 @@ def main():
 
     _thread.start_new_thread(watcher, ())
     _thread.start_new_thread(distribute, ())
+<<<<<<< HEAD
     app.run(host='0.0.0.0', port=int(node_port))    
 
 if __name__ == '__main__':
     main()
     
+=======
+    app.run(host='0.0.0.0', port=int(node_port))
+>>>>>>> 2421ba79d8b7968b8be5a8f9d9c3c9e970da8498
 
